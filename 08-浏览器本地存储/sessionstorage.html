@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>sessionstorage</title>
+</head>
+<body>
+    <h2>sessionstorage</h2>
+    <button id="saveBtn">save</button>
+    <button id="readBtn">read</button>
+    <button id="removeBtn">remove</button>
+    <button id="deleteAllBtn">deleteAll</button>
+
+    <script>
+        let p = {name: 'xiahui', age: 18};
+        //setItem, getItem, removeItem
+        document.getElementById('saveBtn').onclick = function() {
+            sessionStorage.setItem('name', 'xiahui');
+            sessionStorage.setItem('person', JSON.stringify(p));
+        }
+        document.getElementById('readBtn').onclick = function() {
+            let name = sessionStorage.getItem('name');
+            let person = JSON.parse(sessionStorage.getItem('person'));
+            console.log(name);
+            // console.log(person);
+
+            console.log(JSON.stringify(person)); //{"name":"xiahui","age":18}
+        }
+        document.getElementById('removeBtn').onclick = function() {
+            // sessionStorage.removeItem('name');
+            sessionStorage.removeItem('person');
+        }
+        document.getElementById('deleteAllBtn').onclick = function() {
+            sessionStorage.clear();
+        }
+    </script>
+</body>
+</html>

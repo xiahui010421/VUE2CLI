@@ -150,3 +150,9 @@ npm install less less-loader --save-dev
 3).当用户输入内容并按回车时，add 方法会调用 this.addTodo(todoObj)，把新任务对象传递给父组件。
 3. 使用v-model时要切记：v-model绑定的值不能是props传过来的值，因为props是不可以修改的！
 4. props传过来的若是对象类型的值，修改对象中的属性时Vue不会报错，但不推荐这样做。
+
+## webStorage
+1,存储内容大小5MB
+2，浏览器通过window.sessionStorage & window.localStorage
+3, API setItem getItem removeItem clear
+4, null ，json.parse(null)的结果还是null
