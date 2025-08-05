@@ -1,61 +1,68 @@
 <template>
-  <!--隐式类型转换-->
-  <div class="todo-footer" v-show="total">
-    <label>
-      <!--这里也可用v-model来替代，此时不需要计算属性了-->
-<!--      <input type="checkbox" :checked="isAll" @change="checkAll"/>-->
-      <input type="checkbox" v-model="isAll"/>
-    </label>
-    <span>
-       <span>已完成{{ doneTotal }}</span> / 全部{{total}}
-    </span>
-    <button class="btn btn-danger" @click="clearAll">清除已完成任务</button>
-  </div>
+    <div class="todo-footer" v-show="total > 0">
+        <label>
+          <input type="checkbox" :checked="isAll" @change="checkAll"/>
+        </label>
+        <span>
+          <span>已完成{{ doneTotal }}</span> / 全部{{ total }}
+        </span>
+        <button class="btn btn-danger" @click="clearAll">清除已完成任务</button>
+    </div>
 </template>
+
 <script>
-export default {
-  name: "MyFooter",
-  props: ['todos', 'checkAllTodo', 'clearAllDoneTodo'],
-  computed:{
-    total(){
-      return this.todos.length;
-    },
-    doneTotal(){
-      return this.todos.reduce((todoTotal, todo) => {
-        //隐士类型转换
-        return todoTotal + todo.done;
-      }, 0);
-      // return this.todos.filter(todo => todo.done).length;
-    },
-    isAll:{
-      get(){
-        return this.total === this.doneTotal && this.doneTotal > 0; //计算属性可以通过其他的计算属性接着进行计算得到结果
+
+  export default {
+    name: 'MyFooter',
+    props: ['todos', 'checkAllTodo', 'clearAllTodo'],
+    computed:{
+      // 总任务数量
+      total(){
+        return this.todos.length;
       },
-      set(value){
-        //value注意要么为true，要么为false，因为你是把它应用在了checkbox上
-        this.checkAllTodo(value);
+      // 已完成的任务数量
+      doneTotal() {
+        // return this.todos.filter(todo => todo.done).length;
+
+        // this.todos.reduce((pre,current)=>{
+        //   console.log('@',pre, current)  
+        //   return pre+(current.done ? 1 : 0) 
+        // },0)
+
+        return this.todos.reduce((pre,current)=> pre + (current.done ? 1 : 0), 0);
+      },
+      // 是否全选
+      isAll() {
+        return this.doneTotal === this.total && this.total > 0;
       }
-    }
-  },
-  methods:{
-    // checkAll(e){
-    //   // console.log(e.target.checked); //判断这个checkbox到底是不是全选 true全选 false全不选
-    //   this.checkAllTodo(e.target.checked);
+    },
+    methods: {
+      // 全选或全不选
+      checkAll(e) {
+        // console.log(e.target.checked);
+        this.checkAllTodo(e.target.checked);
+      },
+      // 清除已完成任务
+      clearAll() {
+        // console.log('清除已完成任务');
+        this.clearAllTodo();
+      }
+    },
+    // mounted() {
+    //   console.log('todos:', this.todos)
     // }
-    clearAll(){
-       this.clearAllDoneTodo();
-    }
   }
-}
 </script>
 
 <style scoped>
+
 /*footer*/
 .todo-footer {
   height: 40px;
   line-height: 40px;
   padding-left: 6px;
   margin-top: 5px;
+  
 }
 
 .todo-footer label {
@@ -74,5 +81,10 @@ export default {
 .todo-footer button {
   float: right;
   margin-top: 5px;
+  background: red;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 7px;
 }
 </style>

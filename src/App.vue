@@ -1,67 +1,77 @@
 <template>
-  <div id="root">
-    <div class="todo-container">
-      <div class="todo-wrap">
-        <MyHeader :addTodo="addTodo"/>
-        <List
-            :todos="todos"
-            :checkTodo="checkTodo"
-            :deleteTodo="deleteTodo"
-        />
-        <MyFooter
-            :todos="todos"
-            :checkAllTodo="checkAllTodo"
-            :clearAllDoneTodo="clearAllDoneTodo"
-        />
-      </div>
+<div id="root">
+  <div class="todo-container">
+    <div class="todo-wrap">
+
+
+      <MyHeader :addTodo="addTodo"/>
+      <MyList :todos="todos" :checkTodo="checkTodo" :deleteTodo="deleteTodo"/>
+      <MyFooter :todos="todos" :checkAllTodo="checkAllTodo" :clearAllTodo="clearAllTodo"/>
     </div>
   </div>
+</div>
 </template>
-
+ 
 <script>
-import MyHeader from "@/components/MyHeader";
-import List from "@/components/List";
-import MyFooter from '@/components/MyFooter';
-export default {
-  name: "App",
-  components:{
-    List,
-    MyFooter,
-    MyHeader
-  },
-  data() {
-    return {
-      todos: [
-        {id: '001', title: '吃饭', done: false},
-        {id: '002', title: "睡觉", done: true},
-        {id: '003', title: '打代码', done: false}
-      ]
-    }
-  },
-  methods:{
-    //添加的todo
-    addTodo(todo){
-      console.log('我是app组件，我收到了数据');
-      this.todos.unshift(todo);
+  import MyHeader from './components/MyHeader.vue'; 
+  import MyList from './components/MyList.vue';
+  import MyFooter from './components/MyFooter.vue';
+
+  export default {
+    name: 'App',
+    components: {
+      MyHeader,
+      MyList,
+      MyFooter
     },
-    checkTodo(id){
-      const todo = this.todos.find(todo => todo.id === id);
-      todo.done = !todo.done;
+    data(){
+        return{
+            todos:[
+                {id:'0001',title:'吃饭',done:true},
+                {id:'0002',title:'睡觉',done:false},
+                {id:'0003',title:'打豆豆',done:false},
+                {id:'0004',title:'学习',done:false}
+            ]
+        }
     },
-    deleteTodo(id){
-      this.todos = this.todos.filter(todo => todo.id !== id);
-    },
-    checkAllTodo(done){
-      this.todos.forEach(todo => todo.done = done);
-    },
-    clearAllDoneTodo(){
-      this.todos = this.todos.filter(todo => !todo.done)
+    methods: {
+      // 接收子组件传递的 todo 对象
+      addTodo(todoObj){
+        this.todos.unshift(todoObj)
+        // console.log(x);
+      },
+      // 处理子组件传递的 todo id
+      checkTodo(id){
+        this.todos.forEach((todo)=>{
+          if(todo.id === id){
+            // 将对应的 todo 对象的 done 属性取反
+            todo.done = !todo.done;
+          }
+        })
+      },
+      //删除❌
+      deleteTodo(id){
+        this.todos = this.todos.filter((todo)=>{
+          return todo.id !== id
+        })
+      },
+      //全选或者全不选
+      checkAllTodo(done){
+        this.todos.forEach((todo)=>{
+          todo.done = done;
+        })
+      },
+      // 清除已完成任务
+      clearAllTodo(){
+        this.todos = this.todos.filter((todo)=>{
+          return !todo.done;
+        })
+      }
     }
   }
-}
 </script>
 
-<style>
+<style scoped>
 /*base*/
 body {
   background: #fff;
@@ -104,6 +114,4 @@ body {
   border: 1px solid #ddd;
   border-radius: 5px;
 }
-
 </style>
-
