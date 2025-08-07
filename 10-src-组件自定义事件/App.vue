@@ -45,12 +45,7 @@ export default {
     }
   },
   mounted() {
-    // 通过 $refs 获取子组件实例
-    setTimeout(() => {
-      this.$refs.student.$on('xiahui', this.getStudentName);
-    }, 3000);
-    // this.$refs.student.$once('xiahui', this.getStudentName);
-    // this.$refs.student.sendStudentName();
+    // 已移除通过 $refs 绑定事件的代码，避免未定义错误
   }
 };
 </script>

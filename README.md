@@ -189,3 +189,45 @@ npm install less less-loader --save-dev
     3). 组件销毁时，会自动解绑它的全部自定义事件，除非显式解绑。
 6. 注意：通过this.$refs.xxx.$on('事件名', 回调)绑定的自定义事件，回调要么配置在methods中，要么用箭头函数，否则this指向会出问题！
 7. 适用于子组件 ==> 父组件 通信
+
+## 全局事件总线
+1. 适用于：任意组件之间通信
+2. 安装全局事件总线：
+    ```
+    new Vue({
+        beforeCreate() {
+            Vue.prototype.$bus = this; //安装全局事件总线，$bus就是当前应用的vm
+        },
+        render: h => h(App)
+    }).$mount('#app')
+    ```
+3. 使用全局事件总线：
+    1). 接收数据：A组件想接收数据，则在A组件中给$bus绑定自定义事件，事件的回调留在A组件自身。
+    ```
+    methods() {
+        demo(data) {
+            console.log('我是School组件，收到了数据：', data);
+        }
+    }
+    ```
+    2). 发送数据：在B组件中，$bus触发自定义事件，同时传递数据。
+    ```
+    this.$bus.$emit('atguigu', this.msg);
+    ```
+4. 最好在beforeDestroy钩子中，用$off去解绑当前组件所用到的事件。
+    ```
+    beforeDestroy() {
+        this.$bus.$off('atguigu');
+    }
+    ``` 
+    或者解绑所有事件
+    ```
+    beforeDestroy() {
+        this.$bus.$off();
+    }
+    ```
+    注意：
+    1). 组件销毁时，会自动解绑它的全部自定义事件，除非显式解绑。
+    2). 解绑事件时，需要指定事件名，否则会解绑所有事件。
+
+## 
