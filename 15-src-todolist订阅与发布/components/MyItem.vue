@@ -9,32 +9,28 @@
 </template>
 
 <script>
-
+import pubsub from 'pubsub-js';
   export default {  
     name: 'MyItem',
     // 接收父组件传递的 todo 对象
-    props: ['todo', 'checkTodo', 'deleteTodo'],
-
+    props: ['todo'],
     methods:{
         //勾选☑️
         handleCheck(id){
             // console.log(id);
             //app组件将对应的todo对象的done属性取反
-            this.checkTodo(id);
+            // this.checkTodo(id);
+            this.$bus.$emit('checkTodo', id);
         },
         //删除❌
         handleDelete(id){
             if(confirm('确定删除吗？')){
                 // console.log(id);
-                this.deleteTodo(id);
+                // this.deleteTodo(id);
+                pubsub.publish('deleteTodo', id);
             }
         }
-    }
-
-    // mounted() {
-    //   // 这里可以使用 this.todo 来访问传入的 todo 对象
-    //   console.log(this.todo);
-    // }
+    },
   }
 </script>
 

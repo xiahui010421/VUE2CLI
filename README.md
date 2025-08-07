@@ -230,4 +230,36 @@ npm install less less-loader --save-dev
     1). 组件销毁时，会自动解绑它的全部自定义事件，除非显式解绑。
     2). 解绑事件时，需要指定事件名，否则会解绑所有事件。
 
+## pubsub订阅与发布
+1. 适用于：任意组件之间通信
+2. 安装pubsub：npm install pubsub-js
+3. 使用pubsub：
+    1). 接收数据：A组件想接收数据，则在A组件中订阅事件，事件的回调留在A组件自身。
+    ```
+    methods() {
+        demo(msg,data) {
+            console.log('我是School组件，收到了数据：', msg,data);
+        }
+    }
+    ```
+    2). 发送数据：在B组件中，发布事件，同时传递数据。
+    ```
+    pubsub.publish('atguigu', this.msg);
+    ```
+4. 最好在beforeDestroy钩子中，用$off去解绑当前组件所用到的事件。
+    ```
+    beforeDestroy() {
+        pubsub.unsubscribe(this.token);
+    }
+    ``` 
+    或者解绑所有事件
+    ```
+    beforeDestroy() {
+        pubsub.unsubscribe(this.token);
+    }
+    ```
+    注意：
+    1). 组件销毁时，会自动解绑它的全部自定义事件，除非显式解绑。
+    2). 解绑事件时，需要指定事件名，否则会解绑所有事件。
+
 ## 

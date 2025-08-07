@@ -2,10 +2,8 @@
 <div id="root">
   <div class="todo-container">
     <div class="todo-wrap">
-
-
       <MyHeader @addTodo="addTodo"/>
-      <MyList :todos="todos" :checkTodo="checkTodo" :deleteTodo="deleteTodo"/>
+      <MyList :todos="todos" />
       <MyFooter :todos="todos" @checkAllTodo="checkAllTodo" @clearAllTodo="clearAllTodo"/>
     </div>
   </div>
@@ -67,6 +65,16 @@
           return !todo.done;
         })
       }
+    },
+    // 这里使用了 $bus 作为事件总线
+    mounted(){
+      this.$bus.$on('checkTodo', this.checkTodo);
+      this.$bus.$on('deleteTodo', this.deleteTodo);
+    },
+    // 在组件销毁前移除事件监听
+    beforeDestroy() {
+      this.$bus.$off('checkTodo', this.checkTodo);
+      this.$bus.$off('deleteTodo', this.deleteTodo);
     },
     // 监听 todos 的变化
     // 当 todos 发生变化时，将其存储到 localStorage 中

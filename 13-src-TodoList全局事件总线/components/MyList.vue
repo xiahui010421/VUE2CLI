@@ -4,8 +4,6 @@
             v-for="todoObj in todos" 
             :key="todoObj.id" 
             :todo="todoObj" 
-            :checkTodo="checkTodo"
-            :deleteTodo="deleteTodo"
         />
     </ul>
 </template>
@@ -18,7 +16,7 @@
     components: {
       MyItem
     },
-    props: ['todos', 'checkTodo', 'deleteTodo'],
+    props: ['todos'],
   } // 这里的 todos 是从父组件传递过来的属性
 
 </script>
