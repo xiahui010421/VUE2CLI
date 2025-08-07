@@ -156,3 +156,36 @@ npm install less less-loader --save-dev
 2，浏览器通过window.sessionStorage & window.localStorage
 3, API setItem getItem removeItem clear
 4, null ，json.parse(null)的结果还是null
+
+## 自定义事件
+1. 组件实例的自定义事件，是一种组件间通信的方式，适用于：子组件 ===> 父组件
+2. 使用场景：A是父组件，B是子组件，B想给A传数据，那么就要在A中给B绑定自定义事件（事件的回调在A中）。
+3. 绑定自定义事件：
+    1). 第一种方式，在父组件中：<Demo @atguigu="test"/> 或 <Demo ref="demo" v-on:atguigu="test"/>
+    2). 第二种方式，在父组件中：
+    ```
+    mounted() {
+        this.$refs.demo.$on('atguigu', this.test);
+    }
+    ```
+4. 触发自定义事件：
+    1). 第一种方式，在子组件中：<button @click="sendMsg">点我发送消息</button>
+    2). 第二种方式，在子组件中：
+    ```
+    methods: {
+        sendMsg() {
+            this.$emit('atguigu', this.msg);
+        }
+    }
+    ```
+5. 解绑自定义事件：
+    1). 第一种方式，在父组件中：<Demo @atguigu="test" />
+    2). 第二种方式，在父组件中：
+    ```
+    mounted() {
+        this.$refs.demo.$off('atguigu', this.test);
+    }
+    ```
+    3). 组件销毁时，会自动解绑它的全部自定义事件，除非显式解绑。
+6. 注意：通过this.$refs.xxx.$on('事件名', 回调)绑定的自定义事件，回调要么配置在methods中，要么用箭头函数，否则this指向会出问题！
+7. 适用于子组件 ==> 父组件 通信
