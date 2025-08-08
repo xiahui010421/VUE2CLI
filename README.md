@@ -285,3 +285,21 @@ npm install less less-loader --save-dev
     1). 给元素添加类名：animate__animated animate__bounce
     2). 可以通过 `enter-active-class` 和 `leave-active-class` 属性指定进入和离开过渡的类名。
     3). 可以通过 `enter-class` 和 `leave-class` 属性指定进入和离开过渡的类名。
+
+
+## 代理服务器
+1. 代理服务器的作用：解决跨域问题
+2. 代理服务器的工作原理：
+    1). 客户端发送请求到代理服务器
+    2). 代理服务器收到请求后，转发请求到目标服务器
+    3). 目标服务器收到请求后，处理请求
+    4). 目标服务器将处理结果返回给代理服务器
+    5). 代理服务器将处理结果返回给客户端
+3. 代理服务器的配置：
+    1). 在vue.config.js中配置代理服务器
+    2). 配置项：
+        1). target：目标服务器的地址
+        2). pathRewrite：路径重写，将请求路径中的/api前缀去掉
+        3). changeOrigin：是否改变请求头的host，默认值为true
+        4). ws：是否允许websocket跨域，默认值为false
+       
