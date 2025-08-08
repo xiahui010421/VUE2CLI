@@ -270,3 +270,18 @@ npm install less less-loader --save-dev
 5. 注意：
     1). 组件销毁时，会自动解绑它的全部自定义事件，除非显式解绑。
     2). 解绑事件时，需要指定事件名，否则会解绑所有事件。
+
+## 动画与过渡
+1. Vue内置了过渡效果的支持，可以在元素进入或离开 DOM 时应用过渡效果。
+2. 使用 `<transition>` 组件包裹需要过渡的元素。
+3. 可以通过 `name` 属性指定过渡的名称，默认值为 `fade`。
+4. 可以通过 `enter-active-class` 和 `leave-active-class` 属性指定进入和离开过渡的类名。
+5. 可以通过 `enter-class` 和 `leave-class` 属性指定进入和离开过渡的类名。
+6. 可以通过 `appear` 属性指定组件初始渲染时是否应用过渡效果。
+7. 用第三方动画库animate.css
+8. 安装animate.css：npm install animate.css
+9. 引入animate.css：import 'animate.css'
+10. 使用animate.css：
+    1). 给元素添加类名：animate__animated animate__bounce
+    2). 可以通过 `enter-active-class` 和 `leave-active-class` 属性指定进入和离开过渡的类名。
+    3). 可以通过 `enter-class` 和 `leave-class` 属性指定进入和离开过渡的类名。
