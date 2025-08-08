@@ -1,10 +1,12 @@
 <template>
     <ul class="todo-main">
+      <transition-group name="todo" appear>
         <MyItem 
             v-for="todoObj in todos" 
             :key="todoObj.id" 
             :todo="todoObj" 
         />
+      </transition-group>
     </ul>
 </template>
 
@@ -37,5 +39,22 @@
     border-radius: 2px;
     padding-left: 5px;
     margin-top: 10px;
+    }
+
+    .todo-enter-active {
+      animation: todo 1s ease-in-out;
+    }
+    .todo-leave-active{
+      animation: todo 0.3s linear reverse;
+    }
+    @keyframes todo {
+      from {
+        opacity: 0;
+        transform: translateX(-10%);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
     }
 </style>

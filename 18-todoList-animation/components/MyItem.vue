@@ -1,5 +1,5 @@
 <template>
-    <li>
+    <li >
         <label>
         <input type="checkbox" :checked="todo.done" @change="handleCheck(todo.id)"/>
         <span v-show="!todo.isEdit">{{todo.title}}</span>
@@ -113,4 +113,5 @@ li:hover{
 li:hover button {
   display: inline-block;
 }
+
 </style>
