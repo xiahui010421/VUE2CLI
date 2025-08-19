@@ -1,8 +1,7 @@
 <template>
     <div>
       <h1>当前求和为:{{ $store.state.sum }}</h1>
-      <h1>当前求和为:{{ $store.getters.bigSum }}</h1>
-      <h1>我在{{ $store.state.school }},学习{{ $store.state.subject }}</h1>
+      <h1>当前求和为:{{ $store.state.sum*10 }}</h1>
       <!-- 选择数字（.number修饰符确保n为数字类型） -->
       <select v-model.number="n">
         <option :value="1">1</option>

@@ -43,24 +43,14 @@ const mutations = {
   }
 };
 
-// getters--用于将state的数据进行加工
-const getters = {
-  bigSum(state){
-    return state.sum*10
-  }
-}
-
 // 准备state：存储数据
 const state = {
-  sum: 0 ,// 初始求和为0
-  school:'atguigu',
-  subject:'front-end'
+  sum: 0 // 初始求和为0
 };
 
 // 创建并暴露store
 export default new Vuex.Store({
   actions,
   mutations,
-  state,
-  getters
+  state
 });
