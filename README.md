@@ -469,3 +469,37 @@ export default {
 
 ### **总结**
 **组件触发 action → action 调用 mutation → mutation 修改 state → 组件响应 state 变化**  
+
+
+## vuex---- mapState mapGetters mapActions mapMutains
+Vuex 提供了四个常用辅助函数，用于简化组件中对 store 的操作，避免在模板或方法中重复编写 this.$store 相关代码。
+1. mapState
+作用：将 store 中的 state 映射到组件的计算属性。
+场景：组件需要使用 store 中的多个状态时。
+2. mapGetters
+作用：将 store 中的 getters 映射到组件的计算属性。
+场景：组件需要使用 store 中经过处理的派生状态（getters）时。
+3. mapMutations
+作用：将 store 中的 mutations 映射到组件的方法。
+场景：组件需要通过 mutations 同步修改 store 中的状态时。
+4. mapActions
+作用：将 store 中的 actions 映射到组件的方法。
+场景：组件需要通过 actions 异步修改 store 中的状态时。
+```
+    <button @click="ADD(n)">+</button>
+    <button @click="sub(n)">-</button>
+    <button @click="addOdd(n)">当前求和为奇数再加</button>
+    <button @click="addWait(n)">等一等再相加</button>
+    <button @click="RESET(n)">重置</button>
+
+    methods: {
+      //...mapActions({decrement:'sub',incrementOdd:'addOdd',incrementWait:'addWait'}),
+      ...mapActions(['sub','addOdd','addwait']),
+      //...mapMutations({increment:'ADD',reset:'RESET'}),
+      ...mapMutations(['ADD','RESET']),
+    },
+    computed:{
+      ...mapState(['sum', 'school', 'subject']),
+      ...mapGetters(['bigSum']),
+    }
+```
