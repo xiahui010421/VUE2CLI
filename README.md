@@ -303,3 +303,169 @@ npm install less less-loader --save-dev
         3). changeOrigin：是否改变请求头的host，默认值为true
         4). ws：是否允许websocket跨域，默认值为false
        
+
+## vuex的配置与使用
+Vuex 是 Vue 官方提供的状态管理模式，用于集中管理组件共享的状态。
+
+### **一、基本目录结构**
+通常在 Vue 项目中，Vuex 的配置文件放在 `src/store` 目录下，基本结构如下：
+```
+src/
+└── store/
+    ├── index.js       # 入口文件，创建并导出 store
+    ├── state.js       # 存储状态
+    ├── mutations.js   # 修改状态的方法
+    ├── actions.js     # 处理异步/复杂逻辑
+    └── getters.js     # 计算属性（类似组件的 computed）
+```
+
+
+### **二、核心配置文件（index.js）**
+`index.js` 是 Vuex 的入口，用于整合所有模块并创建 store 实例：
+
+```javascript
+// src/store/index.js
+import Vue from 'vue';
+import Vuex from 'vuex';
+import state from './state';
+// 1. 安装 Vuex 插件
+Vue.use(Vuex);
+// 2. 创建并导出 store 实例
+export default new Vuex.Store({
+  state,       // 存储数据
+  mutations,   // 同步修改数据
+  actions,     // 处理异步/复杂逻辑
+});
+```
+
+### **三、各核心模块配置**
+
+#### 1. state.js（存储状态）
+用于定义需要共享的状态数据（类似组件的 `data`）：
+```javascript
+// src/store/state.js
+export default {
+  // 示例：计数器的数值
+  count: 0,
+  // 示例：用户信息
+  userInfo: {
+    name: '',
+    age: null
+  },
+  // 其他共享状态...
+};
+```
+
+
+#### 2. mutations.js（修改状态）
+唯一能直接修改 `state` 的地方，**必须是同步操作**（类似组件的 `methods`，但只负责修改数据）：
+```javascript
+// src/store/mutations.js
+export default {
+  // 第一个参数固定为 state，第二个参数为传入的值（payload）
+  INCREMENT(state, payload) {
+    state.count += payload;
+  },
+  DECREMENT(state, payload) {
+    state.count -= payload;
+  },
+  // 修改用户信息
+  SET_USER_INFO(state, userInfo) {
+    state.userInfo = userInfo;
+  }
+};
+```
+
+
+#### 3. actions.js（处理异步/逻辑）
+用于处理异步操作（如接口请求）或复杂业务逻辑，最终通过 `commit` 调用 `mutations` 修改状态：
+```javascript
+// src/store/actions.js
+export default {
+  // 第一个参数是 context（包含 commit、state 等），第二个参数为传入的值
+  incrementAsync(context, payload) {
+    // 示例：异步操作（定时器）
+    setTimeout(() => {
+      context.commit('INCREMENT', payload); // 调用 mutation
+    }, 1000);
+  },
+  // 示例：调用接口获取用户信息
+  fetchUserInfo(context) {
+    // 假设使用 axios 发请求
+    return axios.get('/api/user').then(res => {
+      context.commit('SET_USER_INFO', res.data); // 成功后修改状态
+    });
+  }
+};
+```
+
+
+#### 4. getters.js（加工数据）
+类似组件的 `computed`，用于对 `state` 进行加工处理（缓存结果，依赖变化时自动更新）：
+```javascript
+// src/store/getters.js
+export default {
+  // 第一个参数固定为 state
+  doubleCount(state) {
+    return state.count * 2; // 返回 count 的 2 倍
+  },
+  userAgeDesc(state) {
+    return state.userInfo.age 
+      ? `年龄：${state.userInfo.age}` 
+      : '年龄未知';
+  }
+};
+```
+
+
+### **四、在组件中使用 Vuex**
+1. **获取 state 或 getters**：
+   ```javascript
+   // 方式1：直接访问
+   this.$store.state.count;
+   this.$store.getters.doubleCount;
+
+   // 方式2：通过 mapState 或 mapGetters 映射（推荐）
+   import { mapState, mapGetters } from 'vuex';
+
+   export default {
+     computed: {
+       ...mapState(['count']), // 映射 state.count 为组件的 count 计算属性
+       ...mapGetters(['doubleCount']) // 映射 getters.doubleCount
+     }
+   };
+   ```
+
+2. **调用 mutations**：
+   ```javascript
+   // 方式1：直接 commit
+   this.$store.commit('INCREMENT', 1); // 调用 INCREMENT  mutation，传入参数 1
+
+   // 方式2：通过 mapMutations 映射为 methods
+   import { mapMutations } from 'vuex';
+
+   export default {
+     methods: {
+       ...mapMutations(['INCREMENT']), // 映射为 this.INCREMENT(1)
+       handleClick() {
+         this.INCREMENT(1); // 调用
+       }
+     }
+   };
+   ```
+
+3. **调用 actions**：
+   ```javascript
+   // 方式1：直接 dispatch
+   this.$store.dispatch('incrementAsync', 1); // 调用 incrementAsync action
+   export default {
+     methods: {
+       handleAsyncClick() {
+         this.incrementAsync(1); // 调用
+       }
+     }
+   };
+   ```
+
+### **总结**
+**组件触发 action → action 调用 mutation → mutation 修改 state → 组件响应 state 变化**  
