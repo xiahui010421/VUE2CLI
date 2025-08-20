@@ -30,14 +30,13 @@
       };
     },
     methods: {
-      //...mapActions({decrement:'sub',incrementOdd:'addOdd',incrementWait:'addWait'}),
-      ...mapActions(['sub','addOdd','addwait']),
-      //...mapMutations({increment:'ADD',reset:'RESET'}),
-      ...mapMutations(['ADD','RESET']),
+      ...mapActions('Count',['sub','addOdd','addwait']),
+      ...mapMutations('Count',['ADD','RESET']),
     },
     computed:{
-      ...mapState(['sum', 'school', 'subject','personList']),
-      ...mapGetters(['bigSum']),
+      ...mapState('Count',['sum', 'school', 'subject']),
+      ...mapState('Person', ['personList']),
+      ...mapGetters('Count',['bigSum']),
     },
     // 可以注销
     mounted(){

@@ -2,8 +2,11 @@
     <div>
         <h1>person list</h1>
         <h3 style="color:red">count组件的和为{{sum}}</h3>
+        <h3>firstname:{{firstPersonName}}</h3>
         <input type="text" placeholder="input your name" v-model="name">
         <button @click="add">add</button>
+        <button @click="addPersonWang">addwang</button>
+        <button @click="addPersonServe">随机</button>
          <ul>
             <li v-for="p in personList" :key="p.id" >{{p.name}}</li>
          </ul>
@@ -20,10 +23,13 @@ export default {
     },
     computed:{
         personList(){
-           return this.$store.state.personList
+           return this.$store.state.Person.personList
         },
         sum(){
-           return this.$store.state.sum
+           return this.$store.state.Count.sum
+        },
+        firstPersonName(){
+          return this.$store.getters['Person/firstPersonName']
         }
         // ...mapState(['personList']),
     },
@@ -31,8 +37,17 @@ export default {
         add(){
             const personObj = {id:nanoid(),name:this.name}
             // console.log(personObj)
-            this.$store.commit('ADD_PERSON',personObj)
+            //attention - 
+            this.$store.commit('Person/ADD_PERSON',personObj)
             this.name=''
+        },
+        addPersonWang(){
+            const personObj = {id:nanoid(),name:this.name}
+            this.$store.dispatch('Person/addPersonWang',personObj)
+            this.name=''
+        },
+        addPersonServe(){
+          this.$store.dispatch('Person/addPersonServe')
         }
     }
 }
